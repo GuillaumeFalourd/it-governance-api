@@ -80,13 +80,13 @@ A RESTful API built with Kotlin and Spring Boot for managing IT governance, incl
 
 2. Build the application:
    ```bash
-   ./mvnw clean compile
+   mvn clean compile
    ```
 
 ### Running the Application
 1. Start the application:
    ```bash
-   ./mvnw spring-boot:run
+   mvn spring-boot:run
    ```
 
 2. The application will start on `http://localhost:8080`
@@ -95,34 +95,20 @@ A RESTful API built with Kotlin and Spring Boot for managing IT governance, incl
    - Swagger UI: `http://localhost:8080/swagger-ui.html`
    - OpenAPI JSON: `http://localhost:8080/api-docs`
 
-### Alternative Run Methods
-- **Using Maven directly** (if Maven is installed):
-  ```bash
-  mvn spring-boot:run
-  ```
-
-- **Using Java directly**:
-  ```bash
-  ./mvnw clean package
-  java -jar target/it-governance-api-0.0.1-SNAPSHOT.jar
-  ```
-
 ## Testing
 
 ### Running Unit Tests
 Execute all tests:
 ```bash
-./mvnw test
+mvn test
 ```
 
 The project includes comprehensive unit tests for all service classes:
 - **UserServiceTest**: 1 test
 - **AccountServiceTest**: 7 tests
 - **PermissionServiceTest**: 8 tests
-- **AccessServiceTest**: 12 tests
-- **NameServiceTest**: 12 tests
 
-**Total**: 41 tests covering all CRUD operations and edge cases.
+**Total**: 17 tests covering all CRUD operations and edge cases.
 
 ### Test Configuration
 - Tests use H2 in-memory database for isolation
