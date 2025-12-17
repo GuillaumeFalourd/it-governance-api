@@ -2,7 +2,6 @@ package com.example.itgovernanceapi.service
 
 import com.example.itgovernanceapi.dto.PermissionRequestDto
 import com.example.itgovernanceapi.dto.PermissionResponseDto
-import com.example.itgovernanceapi.entity.AccountType
 import com.example.itgovernanceapi.entity.Permission
 import com.example.itgovernanceapi.repository.PermissionRepository
 import org.springframework.stereotype.Service
@@ -10,7 +9,10 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
-class PermissionService(private val permissionRepository: PermissionRepository) {
+class PermissionService(
+    private val permissionRepository: PermissionRepository,
+    private val accountRepository: com.example.itgovernanceapi.repository.AccountRepository
+) {
 
     fun getAllPermissions(): List<PermissionResponseDto> {
         return permissionRepository.findAll().map { it.toResponseDto() }
@@ -20,14 +22,13 @@ class PermissionService(private val permissionRepository: PermissionRepository) 
         return permissionRepository.findById(id).orElse(null)?.toResponseDto()
     }
 
-    fun getPermissionsByAccountType(accountType: AccountType): List<PermissionResponseDto> {
-        return permissionRepository.findByAccountType(accountType).map { it.toResponseDto() }
-    }
-
     @Transactional
     fun createPermission(request: PermissionRequestDto): PermissionResponseDto {
+        val account = accountRepository.findById(request.accountId).orElse(null)
+            ?: throw IllegalArgumentException("Account not found with id: ${request.accountId}")
+
         val permission = Permission(
-            accountType = request.accountType,
+            account = account,
             name = request.name,
             description = request.description
         )
@@ -37,8 +38,15 @@ class PermissionService(private val permissionRepository: PermissionRepository) 
     @Transactional
     fun updatePermission(id: UUID, request: PermissionRequestDto): PermissionResponseDto? {
         val existing = permissionRepository.findById(id).orElse(null) ?: return null
+        
+        val account = if (request.accountId != existing.account.id) {
+            accountRepository.findById(request.accountId).orElse(null) ?: return null
+        } else {
+            existing.account
+        }
+        
         val updated = existing.copy(
-            accountType = request.accountType,
+            account = account,
             name = request.name,
             description = request.description
         )
@@ -57,7 +65,9 @@ class PermissionService(private val permissionRepository: PermissionRepository) 
 
     private fun Permission.toResponseDto() = PermissionResponseDto(
         id = id ?: throw IllegalStateException("Permission ID should not be null after saving"),
-        accountType = accountType,
+        accountId = account.id!!,
+        accountType = account.type,
+        accountIdentifier = account.identifier,
         name = name,
         description = description
     )

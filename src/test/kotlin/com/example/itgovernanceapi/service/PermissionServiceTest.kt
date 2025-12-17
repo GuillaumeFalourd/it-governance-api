@@ -2,8 +2,10 @@ package com.example.itgovernanceapi.service
 
 import com.example.itgovernanceapi.dto.PermissionRequestDto
 import com.example.itgovernanceapi.dto.PermissionResponseDto
+import com.example.itgovernanceapi.entity.Account
 import com.example.itgovernanceapi.entity.AccountType
 import com.example.itgovernanceapi.entity.Permission
+import com.example.itgovernanceapi.repository.AccountRepository
 import com.example.itgovernanceapi.repository.PermissionRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -22,19 +24,29 @@ class PermissionServiceTest {
     @Mock
     private lateinit var permissionRepository: PermissionRepository
 
+    @Mock
+    private lateinit var accountRepository: AccountRepository
+
     private lateinit var permissionService: PermissionService
 
     private val testId = UUID.randomUUID()
+    private val accountId = UUID.randomUUID()
+    private val testAccount = Account(
+        id = accountId,
+        type = AccountType.AWS,
+        identifier = "123456789",
+        description = "Test AWS account"
+    )
     private val testPermission = Permission(
         id = testId,
-        accountType = AccountType.AWS,
+        account = testAccount,
         name = "READ",
         description = "Read permission"
     )
 
     @BeforeEach
     fun setUp() {
-        permissionService = PermissionService(permissionRepository)
+        permissionService = PermissionService(permissionRepository, accountRepository)
     }
 
     @Test
@@ -49,7 +61,9 @@ class PermissionServiceTest {
         // Then
         assertEquals(1, result.size)
         assertEquals(testId, result[0].id)
+        assertEquals(accountId, result[0].accountId)
         assertEquals(AccountType.AWS, result[0].accountType)
+        assertEquals("123456789", result[0].accountIdentifier)
         assertEquals("READ", result[0].name)
         assertEquals("Read permission", result[0].description)
         verify(permissionRepository).findAll()
@@ -66,7 +80,9 @@ class PermissionServiceTest {
         // Then
         assertNotNull(result)
         assertEquals(testId, result?.id)
+        assertEquals(accountId, result?.accountId)
         assertEquals(AccountType.AWS, result?.accountType)
+        assertEquals("123456789", result?.accountIdentifier)
         assertEquals("READ", result?.name)
         assertEquals("Read permission", result?.description)
         verify(permissionRepository).findById(testId)
@@ -89,16 +105,17 @@ class PermissionServiceTest {
     fun `createPermission should create and return new permission`() {
         // Given
         val request = PermissionRequestDto(
-            accountType = AccountType.GITHUB,
+            accountId = accountId,
             name = "WRITE",
             description = "Write permission"
         )
         val savedPermission = Permission(
             id = testId,
-            accountType = request.accountType,
+            account = testAccount,
             name = request.name,
             description = request.description
         )
+        `when`(accountRepository.findById(accountId)).thenReturn(Optional.of(testAccount))
         `when`(permissionRepository.save(any(Permission::class.java))).thenReturn(savedPermission)
 
         // When
@@ -107,26 +124,37 @@ class PermissionServiceTest {
         // Then
         assertNotNull(result)
         assertEquals(testId, result.id)
-        assertEquals(AccountType.GITHUB, result.accountType)
+        assertEquals(accountId, result.accountId)
+        assertEquals(AccountType.AWS, result.accountType)
+        assertEquals("123456789", result.accountIdentifier)
         assertEquals("WRITE", result.name)
         assertEquals("Write permission", result.description)
+        verify(accountRepository).findById(accountId)
         verify(permissionRepository).save(any(Permission::class.java))
     }
 
     @Test
     fun `updatePermission should update and return permission when found`() {
         // Given
+        val newAccountId = UUID.randomUUID()
+        val newAccount = Account(
+            id = newAccountId,
+            type = AccountType.STACKSPOT,
+            identifier = "stackspot-org",
+            description = "StackSpot account"
+        )
         val request = PermissionRequestDto(
-            accountType = AccountType.STACKSPOT,
+            accountId = newAccountId,
             name = "ADMIN",
             description = "Admin permission"
         )
         val updatedPermission = testPermission.copy(
-            accountType = request.accountType,
+            account = newAccount,
             name = request.name,
             description = request.description
         )
         `when`(permissionRepository.findById(testId)).thenReturn(Optional.of(testPermission))
+        `when`(accountRepository.findById(newAccountId)).thenReturn(Optional.of(newAccount))
         `when`(permissionRepository.save(updatedPermission)).thenReturn(updatedPermission)
 
         // When
@@ -135,10 +163,13 @@ class PermissionServiceTest {
         // Then
         assertNotNull(result)
         assertEquals(testId, result?.id)
+        assertEquals(newAccountId, result?.accountId)
         assertEquals(AccountType.STACKSPOT, result?.accountType)
+        assertEquals("stackspot-org", result?.accountIdentifier)
         assertEquals("ADMIN", result?.name)
         assertEquals("Admin permission", result?.description)
         verify(permissionRepository).findById(testId)
+        verify(accountRepository).findById(newAccountId)
         verify(permissionRepository).save(updatedPermission)
     }
 
@@ -146,7 +177,7 @@ class PermissionServiceTest {
     fun `updatePermission should return null when permission not found`() {
         // Given
         val request = PermissionRequestDto(
-            accountType = AccountType.AWS,
+            accountId = accountId,
             name = "ADMIN",
             description = "Admin permission"
         )
@@ -187,23 +218,5 @@ class PermissionServiceTest {
         assertFalse(result)
         verify(permissionRepository).existsById(testId)
         verify(permissionRepository, never()).deleteById(testId)
-    }
-
-    @Test
-    fun `getPermissionsByAccountType should return permissions for specific account type`() {
-        // Given
-        val permissions = listOf(testPermission)
-        `when`(permissionRepository.findByAccountType(AccountType.AWS)).thenReturn(permissions)
-
-        // When
-        val result = permissionService.getPermissionsByAccountType(AccountType.AWS)
-
-        // Then
-        assertEquals(1, result.size)
-        assertEquals(testId, result[0].id)
-        assertEquals(AccountType.AWS, result[0].accountType)
-        assertEquals("READ", result[0].name)
-        assertEquals("Read permission", result[0].description)
-        verify(permissionRepository).findByAccountType(AccountType.AWS)
     }
 }

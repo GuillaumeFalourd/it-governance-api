@@ -94,40 +94,25 @@
                                                     </p>
                                                 </div>
                                                 <div class="col-md-5">
-                                                    <h6>AWS Accounts:</h6>
-                                                    <div th:if="${#lists.isEmpty(user.awsAccounts)}" class="text-muted small">None</div>
-                                                    <div th:if="${!#lists.isEmpty(user.awsAccounts)}">
-                                                        <span th:each="account : ${user.awsAccounts}" class="badge bg-warning me-1 mb-1" th:text="${account}"></span>
+                                                    <h6>Accounts:</h6>
+                                                    <div th:if="${#lists.isEmpty(user.accounts)}" class="text-muted small">None</div>
+                                                    <div th:if="${!#lists.isEmpty(user.accounts)}">
+                                                        <span th:each="account : ${user.accounts}" 
+                                                              th:class="'badge me-1 mb-1 ' + ${account.type == 'AWS' ? 'bg-warning' : account.type == 'GITHUB' ? 'bg-dark' : 'bg-info'}"
+                                                              th:text="${account.type + ' - ' + account.identifier}"></span>
                                                     </div>
 
-                                                    <h6 class="mt-2">GitHub Organizations:</h6>
-                                                    <div th:if="${#lists.isEmpty(user.githubOrganizations)}" class="text-muted small">None</div>
-                                                    <div th:if="${!#lists.isEmpty(user.githubOrganizations)}">
-                                                        <span th:each="org : ${user.githubOrganizations}" class="badge bg-dark me-1 mb-1" th:text="${org}"></span>
+                                                    <h6 class="mt-2">Permissions:</h6>
+                                                    <div th:if="${#lists.isEmpty(user.permissions)}" class="text-muted small">None</div>
+                                                    <div th:if="${!#lists.isEmpty(user.permissions)}">
+                                                        <span th:each="permission : ${user.permissions}" class="badge bg-secondary me-1 mb-1" 
+                                                              th:text="${permission.name + ' (' + permission.accountIdentifier + ')'}"></span>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-1 text-end">
                                                     <button class="btn btn-sm btn-outline-danger" onclick="deleteUser(this)" th:data-id="${user.id}">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
-                                                </div>
-                                            </div>
-
-                                            <!-- AWS Roles -->
-                                            <div th:if="${!#maps.isEmpty(user.awsRolesPerAccount)}" class="mt-3">
-                                                <h6>AWS Roles:</h6>
-                                                <div th:each="entry : ${user.awsRolesPerAccount}" class="mb-2">
-                                                    <strong th:text="${entry.key}">Account</strong>:
-                                                    <span th:each="roleName : ${entry.value}" class="badge bg-warning me-1" th:text="${roleName}"></span>
-                                                </div>
-                                            </div>
-
-                                            <!-- GitHub Teams -->
-                                            <div th:if="${!#maps.isEmpty(user.githubTeamsPerOrganization)}" class="mt-3">
-                                                <h6>GitHub Teams:</h6>
-                                                <div th:each="entry : ${user.githubTeamsPerOrganization}" class="mb-2">
-                                                    <strong th:text="${entry.key}">Organization</strong>:
-                                                    <span th:each="teamName : ${entry.value}" class="badge bg-dark me-1" th:text="${teamName}"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -171,13 +156,19 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">AWS Accounts (comma-separated)</label>
-                            <input type="text" class="form-control" id="awsAccounts" name="awsAccounts" placeholder="account1, account2, account3">
+                            <label for="accountIds" class="form-label">Accounts</label>
+                            <select multiple class="form-select" id="accountIds" name="accountIds">
+                                <option th:each="account : ${accounts}" th:value="${account.id}" th:text="${account.type + ' - ' + account.identifier}"></option>
+                            </select>
+                            <div class="form-text">Hold Ctrl (Cmd on Mac) to select multiple accounts</div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">GitHub Organizations (comma-separated)</label>
-                            <input type="text" class="form-control" id="githubOrganizations" name="githubOrganizations" placeholder="org1, org2, org3">
+                            <label for="permissionIds" class="form-label">Permissions</label>
+                            <select multiple class="form-select" id="permissionIds" name="permissionIds">
+                                <option th:each="permission : ${permissions}" th:value="${permission.id}" th:text="${permission.name + ' (' + permission.accountIdentifier + ')'}"></option>
+                            </select>
+                            <div class="form-text">Hold Ctrl (Cmd on Mac) to select multiple permissions</div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -195,15 +186,18 @@
             e.preventDefault();
 
             const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
+            const data = {};
 
-            // Convert comma-separated strings to arrays
-            if (data.awsAccounts) {
-                data.awsAccounts = data.awsAccounts.split(',').map(s => s.trim()).filter(s => s);
+            // Handle regular fields
+            for (let [key, value] of formData.entries()) {
+                if (key !== 'accountIds' && key !== 'permissionIds') {
+                    data[key] = value;
+                }
             }
-            if (data.githubOrganizations) {
-                data.githubOrganizations = data.githubOrganizations.split(',').map(s => s.trim()).filter(s => s);
-            }
+
+            // Handle multi-select fields
+            data.accountIds = formData.getAll('accountIds');
+            data.permissionIds = formData.getAll('permissionIds');
 
             fetch('/api/users', {
                 method: 'POST',

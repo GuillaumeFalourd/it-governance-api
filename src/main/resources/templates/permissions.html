@@ -98,7 +98,7 @@
                                                 <td th:text="${permission.name}">Name</td>
                                                 <td>
                                                     <span th:class="|badge bg-${permission.accountType == 'AWS' ? 'warning' : permission.accountType == 'GITHUB' ? 'dark' : 'info'}|"
-                                                          th:text="${permission.accountType}">Type</span>
+                                                          th:text="${permission.accountType + ' - ' + permission.accountIdentifier}">Account</span>
                                                 </td>
                                                 <td th:text="${permission.description ?: 'N/A'}">Description</td>
                                                 <td>
@@ -133,10 +133,10 @@
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="accountType" class="form-label">Account Type *</label>
-                            <select class="form-select" id="accountType" name="accountType" required>
-                                <option value="">Select account type</option>
-                                <option th:each="accountType : ${accountTypes}" th:value="${accountType}" th:text="${accountType}"></option>
+                            <label for="accountId" class="form-label">Account *</label>
+                            <select class="form-select" id="accountId" name="accountId" required>
+                                <option value="">Select account</option>
+                                <option th:each="account : ${accounts}" th:value="${account.id}" th:text="${account.type + ' - ' + account.identifier}"></option>
                             </select>
                         </div>
                         <div class="mb-3">

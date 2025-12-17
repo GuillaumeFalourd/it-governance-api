@@ -35,13 +35,6 @@ class PermissionController(private val permissionService: PermissionService) {
         }
     }
 
-    @GetMapping("/account-type/{accountType}")
-    @Operation(summary = "Get permissions by account type")
-    fun getPermissionsByAccountType(@PathVariable accountType: AccountType): ResponseEntity<List<PermissionResponseDto>> {
-        val permissions = permissionService.getPermissionsByAccountType(accountType)
-        return ResponseEntity.ok(permissions)
-    }
-
     @PostMapping
     @Operation(summary = "Create a new permission")
     fun createPermission(@Valid @RequestBody request: PermissionRequestDto): ResponseEntity<PermissionResponseDto> {

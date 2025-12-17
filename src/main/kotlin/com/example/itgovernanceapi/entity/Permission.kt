@@ -10,9 +10,9 @@ data class Permission(
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: UUID? = null,
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    val accountType: AccountType,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false)
+    val account: Account,
 
     @Column(nullable = false)
     val name: String, // e.g., "READ", "WRITE", "ADMIN"

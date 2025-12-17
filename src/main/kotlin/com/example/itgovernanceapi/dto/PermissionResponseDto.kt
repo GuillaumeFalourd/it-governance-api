@@ -5,7 +5,9 @@ import java.util.*
 
 data class PermissionResponseDto(
     val id: UUID,
+    val accountId: UUID,
     val accountType: AccountType,
+    val accountIdentifier: String,
     val name: String,
     val description: String?
 )

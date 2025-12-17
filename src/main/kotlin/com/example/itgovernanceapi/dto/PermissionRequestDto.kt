@@ -1,12 +1,12 @@
 package com.example.itgovernanceapi.dto
 
-import com.example.itgovernanceapi.entity.AccountType
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
+import java.util.*
 
 data class PermissionRequestDto(
-    @field:NotNull(message = "Account type is required")
-    val accountType: AccountType,
+    @field:NotNull(message = "Account ID is required")
+    val accountId: UUID,
 
     @field:NotBlank(message = "Name is required")
     val name: String,

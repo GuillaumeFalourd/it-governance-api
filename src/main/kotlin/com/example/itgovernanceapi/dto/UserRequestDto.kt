@@ -2,6 +2,7 @@ package com.example.itgovernanceapi.dto
 
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
+import java.util.*
 
 data class UserRequestDto(
     @field:NotBlank(message = "Name is required")
@@ -14,13 +15,7 @@ data class UserRequestDto(
     @field:NotBlank(message = "Github account is required")
     val githubAccount: String,
 
-    val githubOrganizations: List<String> = listOf(),
+    val accountIds: Set<UUID> = setOf(),
 
-    val githubTeamsPerOrganization: Map<String, List<String>> = mapOf(),
-
-    val awsOrganizationUnits: List<String> = listOf(),
-
-    val awsAccounts: List<String> = listOf(),
-
-    val awsRolesPerAccount: Map<String, List<String>> = mapOf()
+    val permissionIds: Set<UUID> = setOf()
 )

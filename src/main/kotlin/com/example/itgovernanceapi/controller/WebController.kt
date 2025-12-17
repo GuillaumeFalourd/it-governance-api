@@ -34,13 +34,15 @@ class WebController(
     @GetMapping("/web/permissions")
     fun permissionsPage(model: Model): String {
         model.addAttribute("permissions", permissionService.getAllPermissions())
-        model.addAttribute("accountTypes", listOf("AWS", "GITHUB", "STACKSPOT"))
+        model.addAttribute("accounts", accountService.getAllAccounts())
         return "permissions"
     }
 
     @GetMapping("/web/users")
     fun usersPage(model: Model): String {
         model.addAttribute("users", userService.getAllUsers())
+        model.addAttribute("accounts", accountService.getAllAccounts())
+        model.addAttribute("permissions", permissionService.getAllPermissions())
         return "users"
     }
 
@@ -93,15 +95,15 @@ class WebController(
     @ResponseBody
     fun createUser(@RequestBody request: Map<String, Any>): Map<String, Any> {
         return try {
+            val accountIds = (request["accountIds"] as? List<String>)?.map { UUID.fromString(it) }?.toSet() ?: setOf()
+            val permissionIds = (request["permissionIds"] as? List<String>)?.map { UUID.fromString(it) }?.toSet() ?: setOf()
+
             val userRequest = UserRequestDto(
                 name = request["name"] as String,
                 companyEmail = request["companyEmail"] as String,
                 githubAccount = request["githubAccount"] as String,
-                githubOrganizations = (request["githubOrganizations"] as? List<String>) ?: listOf(),
-                githubTeamsPerOrganization = (request["githubTeamsPerOrganization"] as? Map<String, List<String>>) ?: mapOf(),
-                awsOrganizationUnits = (request["awsOrganizationUnits"] as? List<String>) ?: listOf(),
-                awsAccounts = (request["awsAccounts"] as? List<String>) ?: listOf(),
-                awsRolesPerAccount = (request["awsRolesPerAccount"] as? Map<String, List<String>>) ?: mapOf()
+                accountIds = accountIds,
+                permissionIds = permissionIds
             )
             val user = userService.createUser(userRequest)
             mapOf("success" to true, "data" to user)

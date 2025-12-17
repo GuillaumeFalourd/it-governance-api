@@ -7,9 +7,19 @@ data class UserResponseDto(
     val name: String,
     val companyEmail: String,
     val githubAccount: String,
-    val githubOrganizations: List<String>,
-    val githubTeamsPerOrganization: Map<String, List<String>>,
-    val awsOrganizationUnits: List<String>,
-    val awsAccounts: List<String>,
-    val awsRolesPerAccount: Map<String, List<String>>
+    val accounts: List<AccountSummaryDto>,
+    val permissions: List<PermissionSummaryDto>
+)
+
+data class AccountSummaryDto(
+    val id: UUID,
+    val type: String,
+    val identifier: String
+)
+
+data class PermissionSummaryDto(
+    val id: UUID,
+    val accountId: UUID,
+    val accountIdentifier: String,
+    val name: String
 )
