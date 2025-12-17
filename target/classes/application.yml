@@ -15,6 +15,10 @@ spring:
   h2:
     console:
       enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+        web-admin-password: admin
   sql:
     init:
       mode: never
@@ -35,3 +39,4 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui.html
+    enabled: true
