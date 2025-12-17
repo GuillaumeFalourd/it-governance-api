@@ -97,10 +97,13 @@ A RESTful API built with Kotlin and Spring Boot for managing IT governance, incl
 
 ### User Interface
 
-[Dashboard](/img/dashboard.png)
-[Accounts](/img/accounts.png)
-[Permissions](/img/permissions.png)
-[Users](/img/users.png)
+![Dashboard](/img/dashboard.png)
+
+![Accounts](/img/accounts.png)
+
+![Permissions](/img/permissions.png)
+
+![Users](/img/users.png)
 
 ## Testing
 
