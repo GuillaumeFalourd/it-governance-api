@@ -8,7 +8,7 @@ import java.util.*
 data class Account(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: UUID = UUID.randomUUID(),
+    val id: UUID? = null,
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

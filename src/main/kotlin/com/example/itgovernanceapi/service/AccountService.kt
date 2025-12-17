@@ -51,7 +51,7 @@ class AccountService(private val accountRepository: AccountRepository) {
     }
 
     private fun Account.toResponseDto() = AccountResponseDto(
-        id = id,
+        id = id ?: throw IllegalStateException("Account ID should not be null after saving"),
         type = type,
         identifier = identifier,
         description = description

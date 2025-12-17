@@ -89,7 +89,6 @@
                                                 <th>Name</th>
                                                 <th>Account Type</th>
                                                 <th>Description</th>
-                                                <th>Created</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -98,11 +97,10 @@
                                                 <td th:text="${permission.id}">ID</td>
                                                 <td th:text="${permission.name}">Name</td>
                                                 <td>
-                                                    <span th:class="'badge bg-' + (${permission.accountType == 'AWS'} ? 'warning' : ${permission.accountType == 'GITHUB'} ? 'dark' : 'info')"
+                                                    <span th:class="|badge bg-${permission.accountType == 'AWS' ? 'warning' : permission.accountType == 'GITHUB' ? 'dark' : 'info'}|"
                                                           th:text="${permission.accountType}">Type</span>
                                                 </td>
                                                 <td th:text="${permission.description ?: 'N/A'}">Description</td>
-                                                <td th:text="${#dates.format(permission.createdAt, 'yyyy-MM-dd HH:mm')}">Created</td>
                                                 <td>
                                                     <button class="btn btn-sm btn-outline-danger" onclick="deletePermission(this)" th:data-id="${permission.id}">
                                                         <i class="fas fa-trash"></i>

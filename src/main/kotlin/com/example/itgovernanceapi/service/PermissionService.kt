@@ -56,7 +56,7 @@ class PermissionService(private val permissionRepository: PermissionRepository) 
     }
 
     private fun Permission.toResponseDto() = PermissionResponseDto(
-        id = id,
+        id = id ?: throw IllegalStateException("Permission ID should not be null after saving"),
         accountType = accountType,
         name = name,
         description = description

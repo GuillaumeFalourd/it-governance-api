@@ -89,7 +89,6 @@
                                                 <th>Identifier</th>
                                                 <th>Type</th>
                                                 <th>Description</th>
-                                                <th>Created</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -98,11 +97,10 @@
                                                 <td th:text="${account.id}">ID</td>
                                                 <td th:text="${account.identifier}">Identifier</td>
                                                 <td>
-                                                    <span th:class="'badge bg-' + (${account.type == 'AWS'} ? 'warning' : ${account.type == 'GITHUB'} ? 'dark' : 'info')"
+                                                    <span th:class="|badge bg-${account.type == 'AWS' ? 'warning' : account.type == 'GITHUB' ? 'dark' : 'info'}|"
                                                           th:text="${account.type}">Type</span>
                                                 </td>
                                                 <td th:text="${account.description ?: 'N/A'}">Description</td>
-                                                <td th:text="${#dates.format(account.createdAt, 'yyyy-MM-dd HH:mm')}">Created</td>
                                                 <td>
                                                     <button class="btn btn-sm btn-outline-danger" onclick="deleteAccount(this)" th:data-id="${account.id}">
                                                         <i class="fas fa-trash"></i>

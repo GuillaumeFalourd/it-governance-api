@@ -69,7 +69,7 @@ class UserService(private val userRepository: UserRepository) {
 
     private fun User.toResponseDto(): UserResponseDto {
         return UserResponseDto(
-            id = this.id,
+            id = this.id ?: throw IllegalStateException("User ID should not be null after saving"),
             name = this.name,
             companyEmail = this.companyEmail,
             githubAccount = this.githubAccount,

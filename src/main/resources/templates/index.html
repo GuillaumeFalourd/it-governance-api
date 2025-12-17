@@ -167,7 +167,6 @@
                                                 <strong th:text="${account.identifier}">Identifier</strong>
                                                 <span th:text="'(' + ${account.type} + ')'" class="text-muted ms-2"></span>
                                             </div>
-                                            <small class="text-muted" th:text="${#dates.format(account.createdAt, 'MMM dd')}">Date</small>
                                         </div>
                                         <div th:if="${account.description}" class="text-muted small" th:text="${account.description}">Description</div>
                                     </div>
@@ -194,7 +193,6 @@
                                                 <strong th:text="${user.name}">Name</strong>
                                                 <div class="text-muted small" th:text="${user.companyEmail}">Email</div>
                                             </div>
-                                            <small class="text-muted" th:text="${#dates.format(user.createdAt, 'MMM dd')}">Date</small>
                                         </div>
                                     </div>
                                 </div>

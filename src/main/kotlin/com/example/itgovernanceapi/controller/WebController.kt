@@ -98,7 +98,10 @@ class WebController(
                 companyEmail = request["companyEmail"] as String,
                 githubAccount = request["githubAccount"] as String,
                 githubOrganizations = (request["githubOrganizations"] as? List<String>) ?: listOf(),
-                awsAccounts = (request["awsAccounts"] as? List<String>) ?: listOf()
+                githubTeamsPerOrganization = (request["githubTeamsPerOrganization"] as? Map<String, List<String>>) ?: mapOf(),
+                awsOrganizationUnits = (request["awsOrganizationUnits"] as? List<String>) ?: listOf(),
+                awsAccounts = (request["awsAccounts"] as? List<String>) ?: listOf(),
+                awsRolesPerAccount = (request["awsRolesPerAccount"] as? Map<String, List<String>>) ?: mapOf()
             )
             val user = userService.createUser(userRequest)
             mapOf("success" to true, "data" to user)

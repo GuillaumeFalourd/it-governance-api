@@ -114,20 +114,20 @@
                                             </div>
 
                                             <!-- AWS Roles -->
-                                            <div th:if="${!#lists.isEmpty(user.awsRoles)}" class="mt-3">
+                                            <div th:if="${!#maps.isEmpty(user.awsRolesPerAccount)}" class="mt-3">
                                                 <h6>AWS Roles:</h6>
-                                                <div th:each="role : ${user.awsRoles}" class="mb-2">
-                                                    <strong th:text="${role.account}">Account</strong>:
-                                                    <span th:each="roleName : ${role.roles}" class="badge bg-warning me-1" th:text="${roleName}"></span>
+                                                <div th:each="entry : ${user.awsRolesPerAccount}" class="mb-2">
+                                                    <strong th:text="${entry.key}">Account</strong>:
+                                                    <span th:each="roleName : ${entry.value}" class="badge bg-warning me-1" th:text="${roleName}"></span>
                                                 </div>
                                             </div>
 
                                             <!-- GitHub Teams -->
-                                            <div th:if="${!#lists.isEmpty(user.githubTeams)}" class="mt-3">
+                                            <div th:if="${!#maps.isEmpty(user.githubTeamsPerOrganization)}" class="mt-3">
                                                 <h6>GitHub Teams:</h6>
-                                                <div th:each="team : ${user.githubTeams}" class="mb-2">
-                                                    <strong th:text="${team.organization}">Organization</strong>:
-                                                    <span th:each="teamName : ${team.teams}" class="badge bg-dark me-1" th:text="${teamName}"></span>
+                                                <div th:each="entry : ${user.githubTeamsPerOrganization}" class="mb-2">
+                                                    <strong th:text="${entry.key}">Organization</strong>:
+                                                    <span th:each="teamName : ${entry.value}" class="badge bg-dark me-1" th:text="${teamName}"></span>
                                                 </div>
                                             </div>
                                         </div>
