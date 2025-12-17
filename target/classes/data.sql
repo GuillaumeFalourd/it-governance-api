@@ -36,11 +36,10 @@ INSERT INTO user_github_organizations (user_id, organization) VALUES
 
 -- Insert user GitHub teams
 INSERT INTO user_github_teams (user_id, organization, teams) VALUES
-('550e8400-e29b-41d4-a716-446655440021', 'my-org', 'backend-team'),
-('550e8400-e29b-41d4-a716-446655440021', 'my-org', 'devops-team'),
-('550e8400-e29b-41d4-a716-446655440021', 'another-org', 'security-team'),
-('550e8400-e29b-41d4-a716-446655440022', 'my-org', 'frontend-team'),
-('550e8400-e29b-41d4-a716-446655440023', 'another-org', 'qa-team');
+('550e8400-e29b-41d4-a716-446655440021', 'my-org', ARRAY['backend-team', 'devops-team']),
+('550e8400-e29b-41d4-a716-446655440021', 'another-org', ARRAY['security-team']),
+('550e8400-e29b-41d4-a716-446655440022', 'my-org', ARRAY['frontend-team']),
+('550e8400-e29b-41d4-a716-446655440023', 'another-org', ARRAY['qa-team']);
 
 -- Insert user AWS organization units
 INSERT INTO user_aws_organization_units (user_id, unit) VALUES
@@ -58,8 +57,7 @@ INSERT INTO user_aws_accounts (user_id, account) VALUES
 
 -- Insert user AWS roles
 INSERT INTO user_aws_roles (user_id, account, roles) VALUES
-('550e8400-e29b-41d4-a716-446655440021', '123456789012', 'Developer'),
-('550e8400-e29b-41d4-a716-446655440021', '123456789012', 'DevOps'),
-('550e8400-e29b-41d4-a716-446655440021', '987654321098', 'Developer'),
-('550e8400-e29b-41d4-a716-446655440022', '987654321098', 'Developer'),
-('550e8400-e29b-41d4-a716-446655440023', '123456789012', 'Admin');
+('550e8400-e29b-41d4-a716-446655440021', '123456789012', ARRAY['Developer', 'DevOps']),
+('550e8400-e29b-41d4-a716-446655440021', '987654321098', ARRAY['Developer']),
+('550e8400-e29b-41d4-a716-446655440022', '987654321098', ARRAY['Developer']),
+('550e8400-e29b-41d4-a716-446655440023', '123456789012', ARRAY['Admin']);

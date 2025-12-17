@@ -1,0 +1,25 @@
+{
+  "info": {
+    "name": "Get All Permissions",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/request.json"
+  },
+  "item": [],
+  "request": {
+    "method": "GET",
+    "header": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "url": {
+      "raw": "{{baseUrl}}/permissions",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "permissions"
+      ]
+    }
+  }
+}

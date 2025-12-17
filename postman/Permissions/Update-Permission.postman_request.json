@@ -1,0 +1,30 @@
+{
+  "info": {
+    "name": "Update Permission",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/request.json"
+  },
+  "item": [],
+  "request": {
+    "method": "PUT",
+    "header": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "body": {
+      "mode": "raw",
+      "raw": "{\n  \"accountType\": \"AWS\",\n  \"name\": \"READ\",\n  \"description\": \"Updated read-only access to AWS resources\"\n}"
+    },
+    "url": {
+      "raw": "{{baseUrl}}/permissions/{{permissionId}}",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "permissions",
+        "{{permissionId}}"
+      ]
+    }
+  }
+}

@@ -95,6 +95,13 @@ A RESTful API built with Kotlin and Spring Boot for managing IT governance, incl
    - Swagger UI: `http://localhost:8080/swagger-ui.html`
    - OpenAPI JSON: `http://localhost:8080/api-docs`
 
+### User Interface
+
+[Dashboard](/img/dashboard.png)
+[Accounts](/img/accounts.png)
+[Permissions](/img/permissions.png)
+[Users](/img/users.png)
+
 ## Testing
 
 ### Running Unit Tests

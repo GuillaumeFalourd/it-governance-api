@@ -1,0 +1,29 @@
+{
+  "info": {
+    "name": "Create User",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/request.json"
+  },
+  "item": [],
+  "request": {
+    "method": "POST",
+    "header": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "body": {
+      "mode": "raw",
+      "raw": "{\n  \"name\": \"John Doe\",\n  \"companyEmail\": \"john.doe@company.com\",\n  \"githubAccount\": \"johndoe\",\n  \"githubOrganizations\": [\"my-org\"],\n  \"githubTeamsPerOrganization\": {\n    \"my-org\": [\"backend-team\", \"devops-team\"]\n  },\n  \"awsOrganizationUnits\": [\"Production-OU\"],\n  \"awsAccounts\": [\"123456789012\"],\n  \"awsRolesPerAccount\": {\n    \"123456789012\": [\"Developer\", \"DevOps\"]\n  }\n}"
+    },
+    "url": {
+      "raw": "{{baseUrl}}/users",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "users"
+      ]
+    }
+  }
+}

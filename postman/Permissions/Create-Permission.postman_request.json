@@ -1,0 +1,29 @@
+{
+  "info": {
+    "name": "Create Permission",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/request.json"
+  },
+  "item": [],
+  "request": {
+    "method": "POST",
+    "header": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "body": {
+      "mode": "raw",
+      "raw": "{\n  \"accountType\": \"AWS\",\n  \"name\": \"READ\",\n  \"description\": \"Read-only access to AWS resources\"\n}"
+    },
+    "url": {
+      "raw": "{{baseUrl}}/permissions",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "permissions"
+      ]
+    }
+  }
+}

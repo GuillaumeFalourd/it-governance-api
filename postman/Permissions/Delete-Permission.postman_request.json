@@ -1,0 +1,26 @@
+{
+  "info": {
+    "name": "Delete Permission",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/request.json"
+  },
+  "item": [],
+  "request": {
+    "method": "DELETE",
+    "header": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "url": {
+      "raw": "{{baseUrl}}/permissions/{{permissionId}}",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "permissions",
+        "{{permissionId}}"
+      ]
+    }
+  }
+}

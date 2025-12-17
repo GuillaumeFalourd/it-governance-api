@@ -1,0 +1,26 @@
+{
+  "info": {
+    "name": "Get User by ID",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/request.json"
+  },
+  "item": [],
+  "request": {
+    "method": "GET",
+    "header": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "url": {
+      "raw": "{{baseUrl}}/users/{{userId}}",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "users",
+        "{{userId}}"
+      ]
+    }
+  }
+}
