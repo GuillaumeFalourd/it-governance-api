@@ -1,6 +1,6 @@
 # IT Governance API
 
-A RESTful API built with Kotlin and Spring Boot for managing IT governance, including users, accesses, permissions, accounts, and names. The API integrates with Github, AWS, and company email systems.
+A RESTful API built with Kotlin and Spring Boot for managing IT governance, including users, accesses, permissions, accounts, and teams. The API integrates with Github, AWS, and company email systems.
 
 ## Features
 
@@ -29,22 +29,31 @@ A RESTful API built with Kotlin and Spring Boot for managing IT governance, incl
 
 ## Entities
 
-- **User**: Manages user information with company email and GitHub account. Users can be associated with multiple accounts and permissions.
+- **User**: Manages user information with company email and GitHub account. Users can be associated with multiple teams.
 - **Account**: Represents cloud/service accounts with types (AWS, GITHUB, STACKSPOT) and identifiers.
 - **Permission**: Defines permission types specific to each account. Permissions are linked to specific accounts rather than account types.
+- **Team**: Groups accounts and permissions together. Users are assigned to teams to inherit their permissions and account access.
 
 ## Relationships
 
-- **User ↔ Account**: Many-to-many relationship (users can access multiple accounts)
-- **User ↔ Permission**: Many-to-many relationship (users can have multiple permissions)
+- **User ↔ Team**: Many-to-many relationship (users can belong to multiple teams)
+- **Team ↔ Account**: Many-to-many relationship (teams can access multiple accounts)
+- **Team ↔ Permission**: Many-to-many relationship (teams can have multiple permissions)
 - **Account → Permission**: One-to-many relationship (each permission belongs to one account)
 
 ## API Endpoints
 
+### Team Management
+- `GET /teams` - Get all teams
+- `GET /teams/{id}` - Get team by ID
+- `POST /teams` - Create a new team
+- `PUT /teams/{id}` - Update a team
+- `DELETE /teams/{id}` - Delete a team
+
 ### User Management
 - `GET /users` - Get all users
 - `GET /users/{id}` - Get user by ID
-- `POST /users` - Create a new user
+- `POST /users` - Create a new user (requires teamIds)
 - `PUT /users/{id}` - Update a user
 - `DELETE /users/{id}` - Delete a user
 
@@ -112,9 +121,13 @@ The web interface uses Thymeleaf templates with Bootstrap for responsive design.
 
 ![Dashboard](/img/dashboard.png)
 
+![API Docs](/img/api-docs.png)
+
 ![Accounts](/img/accounts.png)
 
 ![Permissions](/img/permissions.png)
+
+![Teams](/img/teams.png)
 
 ![Users](/img/users.png)
 

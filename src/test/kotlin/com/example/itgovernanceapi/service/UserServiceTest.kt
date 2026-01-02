@@ -4,9 +4,10 @@ import com.example.itgovernanceapi.dto.UserRequestDto
 import com.example.itgovernanceapi.entity.Account
 import com.example.itgovernanceapi.entity.AccountType
 import com.example.itgovernanceapi.entity.Permission
+import com.example.itgovernanceapi.entity.Team
 import com.example.itgovernanceapi.entity.User
 import com.example.itgovernanceapi.repository.AccountRepository
-import com.example.itgovernanceapi.repository.PermissionRepository
+import com.example.itgovernanceapi.repository.TeamRepository
 import com.example.itgovernanceapi.repository.UserRepository
 import com.example.itgovernanceapi.service.UserService
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -28,13 +29,11 @@ class UserServiceTest {
     private lateinit var userRepository: UserRepository
 
     @MockBean
-    private lateinit var accountRepository: AccountRepository
-
-    @MockBean
-    private lateinit var permissionRepository: PermissionRepository
+    private lateinit var teamRepository: TeamRepository
 
     @Test
     fun `should create user successfully`() {
+        val teamId = UUID.randomUUID()
         val accountId = UUID.randomUUID()
         val permissionId = UUID.randomUUID()
         val testAccount = Account(
@@ -49,13 +48,19 @@ class UserServiceTest {
             name = "READ",
             description = "Read permission"
         )
+        val testTeam = Team(
+            id = teamId,
+            name = "Test Team",
+            description = "Test team",
+            accounts = mutableSetOf(testAccount),
+            permissions = mutableSetOf(testPermission)
+        )
 
         val request = UserRequestDto(
             name = "John Doe",
             companyEmail = "john.doe@example.com",
             githubAccount = "johndoe",
-            accountIds = setOf(accountId),
-            permissionIds = setOf(permissionId)
+            teamIds = setOf(teamId)
         )
 
         val savedUser = User(
@@ -63,13 +68,11 @@ class UserServiceTest {
             name = request.name,
             companyEmail = request.companyEmail,
             githubAccount = request.githubAccount,
-            accounts = setOf(testAccount),
-            permissions = setOf(testPermission)
+            teams = setOf(testTeam)
         )
 
         `when`(userRepository.findByCompanyEmail(request.companyEmail)).thenReturn(null)
-        `when`(accountRepository.findAllById(request.accountIds)).thenReturn(listOf(testAccount))
-        `when`(permissionRepository.findAllById(request.permissionIds)).thenReturn(listOf(testPermission))
+        `when`(teamRepository.findAllById(request.teamIds)).thenReturn(listOf(testTeam))
         `when`(userRepository.save(any(User::class.java))).thenReturn(savedUser)
 
         val response = userService.createUser(request)
@@ -78,7 +81,6 @@ class UserServiceTest {
         assertEquals(request.name, response.name)
         assertEquals(request.companyEmail, response.companyEmail)
         verify(userRepository).save(any(User::class.java))
-        verify(accountRepository).findAllById(request.accountIds)
-        verify(permissionRepository).findAllById(request.permissionIds)
+        verify(teamRepository).findAllById(request.teamIds)
     }
 }

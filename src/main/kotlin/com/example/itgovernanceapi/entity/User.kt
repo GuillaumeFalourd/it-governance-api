@@ -21,17 +21,9 @@ data class User(
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-        name = "user_accounts",
+        name = "user_teams",
         joinColumns = [JoinColumn(name = "user_id")],
-        inverseJoinColumns = [JoinColumn(name = "account_id")]
+        inverseJoinColumns = [JoinColumn(name = "team_id")]
     )
-    val accounts: Set<Account> = setOf(),
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "user_permissions",
-        joinColumns = [JoinColumn(name = "user_id")],
-        inverseJoinColumns = [JoinColumn(name = "permission_id")]
-    )
-    val permissions: Set<Permission> = setOf()
+    val teams: Set<Team> = setOf()
 )

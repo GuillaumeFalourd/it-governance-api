@@ -15,7 +15,5 @@ data class UserRequestDto(
     @field:NotBlank(message = "Github account is required")
     val githubAccount: String,
 
-    val accountIds: Set<UUID> = setOf(),
-
-    val permissionIds: Set<UUID> = setOf()
+    val teamIds: Set<UUID> = setOf()
 )

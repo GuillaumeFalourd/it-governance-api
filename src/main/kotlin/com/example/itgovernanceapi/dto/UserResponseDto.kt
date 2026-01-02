@@ -7,8 +7,14 @@ data class UserResponseDto(
     val name: String,
     val companyEmail: String,
     val githubAccount: String,
+    val teams: List<TeamSummaryDto>,
     val accounts: List<AccountSummaryDto>,
     val permissions: List<PermissionSummaryDto>
+)
+
+data class TeamSummaryDto(
+    val id: UUID,
+    val name: String
 )
 
 data class AccountSummaryDto(

@@ -69,6 +69,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="/web/teams">
+                                <i class="fas fa-users-cog me-2"></i>Teams
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="/web/users">
                                 <i class="fas fa-users me-2"></i>Users
                             </a>
@@ -100,7 +105,7 @@
             <div class="container-fluid p-4">
                 <!-- Stats Cards -->
                 <div class="row mb-4">
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
                         <div class="card stats-card text-white bg-primary">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
@@ -115,7 +120,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
                         <div class="card stats-card text-white bg-success">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
@@ -130,7 +135,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
+                        <div class="card stats-card text-white bg-warning">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h5 class="card-title mb-0">
+                                            <i class="fas fa-users-cog me-2"></i>Teams
+                                        </h5>
+                                        <h2 class="mb-0" th:text="${#lists.size(teams)}">0</h2>
+                                    </div>
+                                    <i class="fas fa-users-cog fa-2x opacity-75"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
                         <div class="card stats-card text-white bg-info">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
